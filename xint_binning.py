@@ -3,6 +3,7 @@ import numpy as np
 import time
 # my functions (should be in same directory)
 from xint_binning_vars import *
+from global_vars import *
 from run_sum_stats import *
 from myfunctions import *
 
