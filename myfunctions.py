@@ -85,6 +85,7 @@ def radial_avg(q,data,nbins):
   #print(q_rad.shape)
   print('Averaging over %d bins...' % nbins)
   I_rad = np.zeros(nbins)
+  counts = np.zeros(nbins, dtype=np.uint32)
   for i in range(0, nbins):
     #print('Iteration %d' % i)
     #print('creating bin in q-range: %f - %f' % (q_rad[i], q_rad[i+1]))
@@ -93,11 +94,13 @@ def radial_avg(q,data,nbins):
     condition = np.logical_and(q >= q_rad[i], q < q_rad[i+1])
     #print(condition)
     tmp = np.where(condition, 1, 0)  # 1s and 0s array of matching the condition
-    counts = np.sum(tmp)  # count hits that match the condition
+    counts[i] = np.sum(tmp)  # count hits that match the condition
+    #print(counts[i])
     #print(tmp.shape)
     #print(high_data.shape)
     #print(np.multiply(low_data,tmp))
-    if counts > 0:
-      I_rad[i] = np.sum(np.multiply(data,tmp), axis=None) / counts
+    if counts[i] > 0:
+      I_rad[i] = np.sum(np.multiply(data,tmp), axis=None) / counts[i]
     else: continue
-  return q_rad[0:nbins],I_rad
+  #print(counts)
+  return counts,q_rad[0:nbins],I_rad
